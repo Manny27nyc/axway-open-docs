@@ -1,9 +1,9 @@
 {
-    "title": "Upgrade Apache Cassandra",
-    "linkTitle": "Upgrade Apache Cassandra",
-    "weight": 30,
-    "date": "2019-10-07",
-    "description": "Learn how to upgrade your Cassandra environment from version 2.2.8 or 2.2.12 to version 3.11.11 with no downtime."
+"title": "Upgrade Apache Cassandra",
+  "linkTitle": "Upgrade Apache Cassandra",
+  "weight": 30,
+  "date": "2019-10-07",
+  "description": "Learn how to upgrade your Cassandra environment from version 2.2.8 or 2.2.12 to version 3.11.11 with no downtime."
 }
 
 The upgrade process differs according to your environment:
@@ -58,7 +58,8 @@ To start upgrading your old installation:
 
 1. Download [Cassandra 2.2.19](https://support.axway.com/en/downloads/download-details/id/1449277).
 2. Unzip the downloaded package, and copy the installation directory to the target Cassandra server node in an appropriate directory, for example, `/home/cassandra-2219/`.
-3. To complete your installation, perform all steps from section [Upgrade in a single-node](#step-1---backup-your-old-cassandra-data) for each node in the cluster, by replacing the 3.11.11 version with your target version 2.2.19. After that, proceed to Stage 2.
+3. To complete your installation, perform steps 1 to 6 from section [Upgrade in a single-node](#step-1---backup-your-old-cassandra-data) for each node in the cluster, by replacing the 3.11.11 version with your target version 2.2.19. 
+4. With all nodes upgraded apply step 7 to repair and upgrade the SSTables on each node, after this proceed to Stage 2.
 
 ### Stage 2 - Upgrade Cassandra 2.2.19 to 3.11.11
 
@@ -66,7 +67,8 @@ To start upgrading your old installation:
 
 1. Download [Cassandra 3.11.11](https://support.axway.com/en/downloads/download-details/id/1449279)
 2. Unzip the downloaded package, and copy the installation directory to the target Cassandra server node in an appropriate directory, for example, `/home/cassandra-31111/`.
-3. To complete your installation, perform all steps from section [Upgrade in a single-node](#step-1---backup-your-old-cassandra-data) for each node in the cluster, then return to execute the following section.
+3. To complete your installation, perform steps 1 to 6 from section [Upgrade in a single-node](#step-1---backup-your-old-cassandra-data) for each node in the cluster.
+4. With all nodes upgraded apply step 7 to repair and upgrade the SSTables on each node then return to execute the following section.
 
 #### Revert Cassandra's driver configuration in API Gateway
 
@@ -96,12 +98,13 @@ Attention to the following:
 
 {{< alert title="Caution" color="warning" >}}Upgrading multi-node environments directly to version 3.11.11 result in downtime of API Gateway and Cassandra.{{< /alert >}}
 
-To upgrade Apache Cassandra directly to version 3.11.11 in a multi-node or multi-datacenter environment, follow the same steps as for [Single-node](/docs/apim_installation/apigw_upgrade/upgrade_cassandra/#cassandra-upgrade-steps--single-node)) procedure.
+To upgrade Apache Cassandra directly to version 3.11.11 in a multi-node or multi-datacenter environment, follow the same 1 to 6 steps as for [Single-node](/docs/apim_installation/apigw_upgrade/upgrade_cassandra/#cassandra-upgrade-steps--single-node)) procedure.
 
 Attention to the following:
 
 * Repeat the steps on each node in the cluster.
 * Upgrade all of the nodes in one DC before moving to the next DC.
+* With Cassandra upgraded on all nodes run step 7 on each node (repair and upgrade SSTables).
 * Only restart the API Gateway once all nodes and DCs have been upgraded.
 
 ## Upgrade Cassandra in a single-node
@@ -166,15 +169,7 @@ Copy the following files to the `CASSANDRA_HOME/conf/` folder in your new insta
 * `CASSANDRA_HOME/conf/.truststore`
 * `CASSANDRA_HOME/conf/.keystore`
 
-### Step 4 - Stop API Gateway
-
-Stop each API Gateway instance, and run the following command from the `/posix/bin` directory of your gateway installation:
-
-```
-./startinstance -g "my_group" -n "my_server" -k
-```
-
-### Step 5 - Shutdown your old Cassandra installation
+### Step 4 - Shutdown your old Cassandra installation
 
 To shutdown your old Cassandra installation, follow these steps:
 
@@ -191,7 +186,7 @@ To shutdown your old Cassandra installation, follow these steps:
     $sudo kill pid #Stop Cassandra
     ```
 
-### Step 6 - Copy data between Cassandra installations
+### Step 5 - Copy data between Cassandra installations
 
 Copy the `CASSANDRA_HOME/data` directory from your old Cassandra installation to the corresponding directory in your new installation (for example, `/home/cassandra-31111/cassandra/`).
 
@@ -203,7 +198,7 @@ data
 saved_caches
 ```
 
-### Step 7 - Start Cassandra 3.11.11
+### Step 6 - Start Cassandra 3.11.11
 
 Run the following command from the `bin` directory of the Cassandra 3.11.11 installation to start the Cassandra instance:
 
@@ -213,7 +208,7 @@ $./cassandra
 
 ```
 
-### Step 8 - Repair and upgrade your tables
+### Step 7 - Repair and upgrade your tables
 
 Run the following commands to repair and upgrade your tables:
 
@@ -230,14 +225,6 @@ Run the following commands to repair and upgrade your tables:
     $cd /home/cassandra-31111/cassandra/bin
     $./nodetool upgradesstables
     ```
-
-### Step 9 - Restart API Gateway
-
-Restart each API Gateway instance. Open a shell at the `/posix/bin` directory of your gateway installation and run the `startinstance` command. For example:
-
-```
-startinstance -n "my_server" -g "my_group"
-```
 
 ## Troubleshooting
 
