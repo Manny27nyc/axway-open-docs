@@ -58,8 +58,8 @@ To start upgrading your old installation:
 
 1. Download [Cassandra 2.2.19](https://support.axway.com/en/downloads/download-details/id/1449277).
 2. Unzip the downloaded package, and copy the installation directory to the target Cassandra server node in an appropriate directory, for example, `/home/cassandra-2219/`.
-3. To complete your installation, perform steps 1 to 6 from section [Upgrade in a single-node](#step-1---backup-your-old-cassandra-data) for each node in the cluster, by replacing the 3.11.11 version with your target version 2.2.19. 
-4. With all nodes upgraded apply step 7 to repair and upgrade the SSTables on each node, after this proceed to Stage 2.
+3. To complete your installation, perform steps 1 to 6 from section [Upgrade in a single-node](#step-1---backup-your-old-cassandra-data) on each node in the cluster, by replacing the 3.11.11 version with your target version 2.2.19. 
+4. With all nodes upgraded apply [step 7](#step-7---repair-and-upgrade-your-tables) to repair and upgrade the SSTables on each node, after this proceed to Stage 2.
 
 ### Stage 2 - Upgrade Cassandra 2.2.19 to 3.11.11
 
@@ -67,8 +67,8 @@ To start upgrading your old installation:
 
 1. Download [Cassandra 3.11.11](https://support.axway.com/en/downloads/download-details/id/1449279)
 2. Unzip the downloaded package, and copy the installation directory to the target Cassandra server node in an appropriate directory, for example, `/home/cassandra-31111/`.
-3. To complete your installation, perform steps 1 to 6 from section [Upgrade in a single-node](#step-1---backup-your-old-cassandra-data) for each node in the cluster.
-4. With all nodes upgraded apply step 7 to repair and upgrade the SSTables on each node then return to execute the following section.
+3. To complete your installation, perform steps 1 to 6 from section [Upgrade in a single-node](#step-1---backup-your-old-cassandra-data) on each node in the cluster.
+4. With all nodes upgraded apply [step 7](#step-7---repair-and-upgrade-your-tables) to repair and upgrade the SSTables on each node then return to execute the following section.
 
 #### Revert Cassandra's driver configuration in API Gateway
 
@@ -104,7 +104,7 @@ Attention to the following:
 
 * Repeat the steps on each node in the cluster.
 * Upgrade all of the nodes in one DC before moving to the next DC.
-* With Cassandra upgraded on all nodes run step 7 on each node (repair and upgrade SSTables).
+* With Cassandra upgraded on all nodes run [step 7](#step-7---repair-and-upgrade-your-tables) on each node (repair and upgrade SSTables).
 * Only restart the API Gateway once all nodes and DCs have been upgraded.
 
 ## Upgrade Cassandra in a single-node
